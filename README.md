@@ -26,7 +26,7 @@ To run inference using the provided `inference.py` file, follow these steps:
 1. Clone the project repository:
 
     ```bash
-    git clone https://github.com/yourusername/yourproject.git
+    git clone https://github.com/mertpekey/FruitFlyVideo.git
     ```
 
 2. Create a directory named `Prediction_Data`, and inside that directory, create a `Test` folder. Place the images you want to make inferences on inside the `Test` folder. You can modify the folder structure and image names if needed.
