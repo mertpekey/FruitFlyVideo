@@ -46,7 +46,7 @@ for key, value in model_args.items():
 
 # Load model checkpoints
 if args.load_ckpt:
-    saved_ckpt = "Pretrained_Model/epoch=24-step=1000.ckpt"
+    saved_ckpt = f"Pretrained_Model/{args.model_name}"
     model = load_model_from_ckpt(model, saved_ckpt)
     print('Model Loaded!')
 
