@@ -8,7 +8,7 @@ The model used in this project is Timesformer. It's designed for video classific
 - `sample_rate`: 16
 - `learning_rate`: 1e-3
 - `num_frames`: 8
-- Image size: 224x224
+- Video frame size: 224x224
 - Model input shape: `(batch_size, num_frames, channel, height, width)`
 
 ## Installation
@@ -29,7 +29,7 @@ To run inference using the provided `inference.py` file, follow these steps:
     git clone https://github.com/mertpekey/FruitFlyVideo.git
     ```
 
-2. Create a directory named `Prediction_Data`, and inside that directory, create a `Test` folder. Place the images you want to make inferences on inside the `Test` folder. You can modify the folder structure and image names if needed.
+2. Create a directory named `Prediction_Data`, and inside that directory, create a `Test` folder. Place the videos you want to make inferences on inside the `Test` folder. You can modify the folder structure and image names if needed.
 
 3. Create a directory named `Pretrained_Model`, and download the pretrained model inside that folder. Change the name of the file to `pretrained_model.ckpt`. Or you can define it using `--model_name` argument.
 
