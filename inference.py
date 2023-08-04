@@ -5,7 +5,6 @@ import argparse
 import torch
 
 from transformers import AutoImageProcessor
-from arguments import args
 from utils import create_preprocessor_config, get_timesformer_model, load_model_from_ckpt
 from data_module import FlyDataModule
 
