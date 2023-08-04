@@ -12,6 +12,7 @@ from data_module import FlyDataModule
 
 INFERENCE_PATH = 'Prediction_Data'
 parser = argparse.ArgumentParser(description="Enter Arguments for Video Fly")
+parser.add_argument("--model_name", type=str, default='pretrained_model.ckpt', help="Filename of Pretrained Model")
 parser.add_argument("--inference_data_path", type=str, default=INFERENCE_PATH, help="Path to inference data folder")
 parser.add_argument("--batch_size", type=int, default=1, help="Batch size")
 parser.add_argument("--video_path_prefix", type=str, default="", help="Prefix for video paths")
@@ -45,7 +46,7 @@ for key, value in model_args.items():
 
 # Load model checkpoints
 if args.load_ckpt:
-    saved_ckpt = "tb_logs/timesformer_logs_s16_noES_b16_lr1e3/version_0/checkpoints/epoch=24-step=1000.ckpt"
+    saved_ckpt = "Pretrained_Model/epoch=24-step=1000.ckpt"
     model = load_model_from_ckpt(model, saved_ckpt)
     print('Model Loaded!')
 
