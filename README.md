@@ -47,6 +47,32 @@ To run inference using the provided `inference.py` file, follow these steps:
 
 4. The inference script will generate a `prediction.json` output file in the project directory, containing the inference results.
 
-Please make sure to adjust paths and arguments as needed for your project.
+# Prediction Output
+
+The `predictions.json` output file provides the results of the inference process for the input videos. Each entry in the file corresponds to a video and includes the following information:
+
+- **Video Name**: The name of the video file for which predictions were made.
+
+- **Clip Index**: A list of indices corresponding to the clips within the video that were used for inference. If multiple clips were used from the same video, they will have different indices.
+
+- **Predictions**: A list of predicted classes for each clip. These classes indicate the action or content present in the corresponding clip.
+
+- **Probabilities**: A list of lists containing class probabilities for each clip. The class probabilities are represented in the order: "Feeding", "Grooming", "Pumping". Each sublist contains three values, where the first value corresponds to the probability of the "Feeding" class, the second value to the "Grooming" class, and the third value to the "Pumping" class.
+
+Here's an example of what a `predictions.json` file may look like:
+
+```json
+{
+    "v_feeding_g01_100.avi": {
+        "clip_index": [0, 1],
+        "prediction": ["Feeding", "Feeding"],
+        "probs": [
+            [0.4673, 0.1260, 0.4066],
+            [0.8415, 0.0460, 0.1126]
+        ]
+    },
+    // Add more entries for other videos...
+}
+```
 
 ---
