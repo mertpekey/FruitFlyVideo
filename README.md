@@ -47,7 +47,7 @@ To run inference using the provided `inference.py` file, follow these steps:
 
 4. The inference script will generate a `prediction.json` output file in the project directory, containing the inference results.
 
-# Prediction Output
+## Prediction Output
 
 The `predictions.json` output file provides the results of the inference process for the input videos. Each entry in the file corresponds to a video and includes the following information:
 
@@ -70,8 +70,7 @@ Here's an example of what a `predictions.json` file may look like:
             [0.4673, 0.1260, 0.4066],
             [0.8415, 0.0460, 0.1126]
         ]
-    },
-    // Add more entries for other videos...
+    }
 }
 ```
 
