@@ -78,27 +78,17 @@ Here's an example of what a `predictions.json` file may look like:
 
 Training Data structure is important to read the classes properly. There should be a folder (default: FlyTrainingData) which consists of two folders, Train and Validation. Both of these files should have folders that represents classes and video files should be in these folders.
 
-
-FruitFlyVideo/
-
-└── FlyTrainingData/
-
-    ├── Train/
-
-    │   ├── Feeding/
-
-    │   ├── Grooming/
-
-    │   └── Pumping/
-
-    └── Validation/
-
-        ├── Feeding/
-
-        ├── Grooming/
-        
-        └── Pumping/
-
+```
+FlyTrainingData/
+├─ Train/
+│  ├─ Feeding/
+│  ├─ Grooming/
+│  ├─ Pumping/
+├─ Validation/
+│  ├─ Feeding/
+│  ├─ Grooming/
+│  ├─ Pumping/
+```
 
 To train the model, some arguments should be set properly. All arguments can be found in ```arguments.py```. An example script to finetune a pretrained model head using new dataset is as follows
 
