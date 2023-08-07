@@ -80,14 +80,23 @@ Training Data structure is important to read the classes properly. There should 
 
 
 FruitFlyVideo/
+
 └── FlyTrainingData/
+
     ├── Train/
+
     │   ├── Feeding/
+
     │   ├── Grooming/
+
     │   └── Pumping/
+
     └── Validation/
+
         ├── Feeding/
+
         ├── Grooming/
+        
         └── Pumping/
 
 
