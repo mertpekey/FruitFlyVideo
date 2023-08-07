@@ -2,7 +2,6 @@ import torch
 import torch.nn.functional as F
 import lightning.pytorch as pl
 import torchmetrics
-import wandb
 
 import os
 import numpy as np
@@ -18,7 +17,7 @@ class VideoClassificationLightningModule(pl.LightningModule):
         self.args = args
         self.model = model
         self.dataloader_length = 0
-        self.classes = os.listdir(args.train_data_path)
+        self.classes = sorted([i for i in os.listdir(args.train_data_path) if i != '.DS_Store'])
 
         self.save_hyperparameters("args")
         
@@ -41,7 +40,7 @@ class VideoClassificationLightningModule(pl.LightningModule):
         output = self(X.permute(0, 2, 1, 3, 4)) # (8, 3, 16, 224, 224) -> (8, 16, 3, 224, 224)
 
         loss = F.cross_entropy(output.logits, y)
-        acc = torchmetrics.functional.accuracy(output.logits, y, task="multiclass", num_classes=3)
+        acc = torchmetrics.functional.accuracy(output.logits, y, task="multiclass", num_classes=len(self.classes))
 
         self.log(
             f"{stage}_loss", loss.item(), batch_size=self.args.batch_size, on_step=False, on_epoch=True, prog_bar=True
@@ -62,27 +61,6 @@ class VideoClassificationLightningModule(pl.LightningModule):
             self.epoch_logits.extend(output.logits)
             for i in list(set(incorrect_samples)):
                 self.epoch_incorrect_samples.add(i)
-            
-
-        
-    def on_validation_epoch_end(self):
-        #dummy_input = torch.zeros((1, 8, 3, 224, 224), device=self.device)
-        #model_filename = "model_ckpt.onnx"
-        #torch.onnx.export(self, dummy_input, model_filename, opset_version=11)
-        #artifact = wandb.Artifact(name="model.ckpt", type="model")
-        #artifact.add_file(model_filename)
-        #self.logger.experiment.log_artifact(artifact)
-        if self.args.use_wandb:
-            flattened_logits = torch.flatten(torch.cat(self.epoch_logits))
-            
-            incorrect_sample_df = pd.DataFrame({'false_predictions':list(self.epoch_incorrect_samples)})
-            self.logger.log_text(key="incorrect_preds", dataframe=incorrect_sample_df)
-            self.logger.experiment.log(
-                {"valid/logits": wandb.Histogram(flattened_logits.to("cpu")),
-                "global_step": self.global_step})
-
-            self.epoch_logits.clear()
-            self.epoch_incorrect_samples = set()
         
 
 

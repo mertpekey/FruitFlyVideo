@@ -74,4 +74,26 @@ Here's an example of what a `predictions.json` file may look like:
 }
 ```
 
+## Training the Model
+
+Training Data structure is important to read the classes properly. There should be a folder (default: FlyTrainingData) which consists of two folders, Train and Validation. Both of these files should have folders that represents classes and video files should be in these folders.
+
+    ```bash
+    cd FruitFlyVideo
+    mkdir FlyTrainingData
+    cd FlyTrainingData
+    mkdir Train Validation
+    cd Train
+    mkdir Feeding Grooming Pumping
+    cd ../Validation
+    mkdir Feeding Grooming Pumping
+    ```
+
+To train the model, some arguments should be set properly. All arguments can be found in ```arguments.py```. An example script to finetune a pretrained model head using new data:
+
+    ```bash
+    python main.py --mode 'train' --finetune_head True --batch_size 16 --max_epochs 1 --lr 0.001 --sample_rate 16
+    ```
+
+
 ---

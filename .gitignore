@@ -1,3 +1,8 @@
 Pretrained_Model
 .DS_Store
 FlyTrainingData
+wandb
+lightning_logs
+Prediction_Data
+wandb_checkpoints/
+__pycache__/
