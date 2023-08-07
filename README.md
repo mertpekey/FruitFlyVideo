@@ -90,11 +90,13 @@ FlyTrainingData/
 │  ├─ Pumping/
 ```
 
-To train the model, some arguments should be set properly. All arguments can be found in ```arguments.py```. An example script to finetune a pretrained model head using new dataset is as follows
+To train the model, some arguments should be set properly. All arguments can be found in ```arguments.py```. Pretrained timesformer model finetuned on kinetics dataset is used in this project. Therefore, changing ```--num_frames``` argument other than 8 could effect the pretrained weights.
 
-    ```
-    python main.py --mode 'train' --finetune_head True --batch_size 16 --max_epochs 1 --lr 0.001 --sample_rate 16
-    ```
+An example script to finetune a pretrained model head using new dataset is as follows:
+
+```
+python main.py --mode 'train' --batch_size 16 --max_epochs 1 --lr 0.001 --sample_rate 16
+```
 
 
 ---
