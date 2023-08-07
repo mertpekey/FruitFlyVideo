@@ -14,15 +14,10 @@ from utils import create_preprocessor_config, get_timesformer_model, load_model_
 from model import VideoClassificationLightningModule
 from data_module import FlyDataModule
 
-def main(mode = None, load_model=False):
-
-    # PATH INFO
-    PROJ_DIR = '/cta/users/mpekey/FlyVideo'
-    TRAIN_DATA_PATH = os.path.join(PROJ_DIR, 'FlyTrainingData', 'Train')
-    VAL_DATA_PATH = os.path.join(PROJ_DIR, 'FlyTrainingData', 'Validation')
+def main(mode = None):
 
     # DATASET INFO
-    class_labels = ['Feeding', 'Grooming', 'Pumping']
+    class_labels = os.listdir(args.train_data_path)
     label2id = {label: i for i, label in enumerate(class_labels)}
     id2label = {i: label for label, i in label2id.items()}
 
@@ -31,9 +26,9 @@ def main(mode = None, load_model=False):
     model = get_timesformer_model(ckpt="facebook/timesformer-base-finetuned-k400",
                                   label2id=label2id,
                                   id2label=id2label,
-                                  num_frames=8)
+                                  num_frames=args.num_frames)
     
-    # Freeze the model    
+    # Freeze the timesformer model to finetune classification head    
     for param in model.timesformer.parameters():
         param.requires_grad = False
 
@@ -48,7 +43,7 @@ def main(mode = None, load_model=False):
 
 
     # Lightning Callbacks
-    wandb_logger = WandbLogger(project="timesformer-wandb")
+    wandb_logger = WandbLogger(project="timesformer-wandb") if args.use_wandb else None
     checkpoint_callback = ModelCheckpoint(
         monitor="val_loss",
         mode="max",
@@ -62,12 +57,12 @@ def main(mode = None, load_model=False):
         callbacks=[TQDMProgressBar(refresh_rate=args.batch_size), checkpoint_callback],
         accelerator="gpu" if torch.cuda.is_available() else "auto",
         devices=1 if torch.cuda.is_available() else None,
-        log_every_n_steps=40
+        log_every_n_steps=args.batch_size
     )
 
-    if load_model:
-        saved_ckpt = "tb_logs/timesformer_logs_s16_noES_b16_lr1e3/version_0/checkpoints/epoch=24-step=1000.ckpt"
-        model = load_model_from_ckpt(model, saved_ckpt)
+    if args.ckpt_file_path != '':
+        #saved_ckpt = "tb_logs/timesformer_logs_s16_noES_b16_lr1e3/version_0/checkpoints/epoch=24-step=1000.ckpt"
+        model = load_model_from_ckpt(model, args.ckpt_file_path)
         classification_module = VideoClassificationLightningModule(model, args)
     else:
         classification_module = VideoClassificationLightningModule(model, args)
@@ -87,4 +82,4 @@ def main(mode = None, load_model=False):
 
 
 if __name__ == '__main__':
-    main(mode = 'fit', load_model=False)
+    main(mode = 'fit')

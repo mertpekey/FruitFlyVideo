@@ -1,10 +1,10 @@
 import torch
-import torchvision
 import torch.nn.functional as F
 import lightning.pytorch as pl
 import torchmetrics
 import wandb
 
+import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,7 +18,7 @@ class VideoClassificationLightningModule(pl.LightningModule):
         self.args = args
         self.model = model
         self.dataloader_length = 0
-        self.classes = ['Feeding', 'Grooming', 'Pumping']
+        self.classes = os.listdir(args.train_data_path)
 
         self.save_hyperparameters("args")
         
@@ -72,17 +72,17 @@ class VideoClassificationLightningModule(pl.LightningModule):
         #artifact = wandb.Artifact(name="model.ckpt", type="model")
         #artifact.add_file(model_filename)
         #self.logger.experiment.log_artifact(artifact)
+        if self.args.use_wandb:
+            flattened_logits = torch.flatten(torch.cat(self.epoch_logits))
+            
+            incorrect_sample_df = pd.DataFrame({'false_predictions':list(self.epoch_incorrect_samples)})
+            self.logger.log_text(key="incorrect_preds", dataframe=incorrect_sample_df)
+            self.logger.experiment.log(
+                {"valid/logits": wandb.Histogram(flattened_logits.to("cpu")),
+                "global_step": self.global_step})
 
-        flattened_logits = torch.flatten(torch.cat(self.epoch_logits))
-        
-        incorrect_sample_df = pd.DataFrame({'false_predictions':list(self.epoch_incorrect_samples)})
-        self.logger.log_text(key="incorrect_preds", dataframe=incorrect_sample_df)
-        self.logger.experiment.log(
-            {"valid/logits": wandb.Histogram(flattened_logits.to("cpu")),
-             "global_step": self.global_step})
-
-        self.epoch_logits.clear()
-        self.epoch_incorrect_samples = set()
+            self.epoch_logits.clear()
+            self.epoch_incorrect_samples = set()
         
 
 

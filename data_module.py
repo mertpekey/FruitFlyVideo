@@ -36,7 +36,7 @@ class FlyDataModule(pl.LightningDataModule):
             self.train_dataset = LimitDataset(
                 pytorchvideo.data.labeled_video_dataset(
                     data_path=self.args.train_data_path,
-                    clip_sampler=pytorchvideo.data.make_clip_sampler('uniform', self.args.clip_duration), # Experiment olarak random da denenebilir
+                    clip_sampler=pytorchvideo.data.make_clip_sampler('uniform', self.args.clip_duration),
                     transform=train_transform,
                     video_path_prefix=self.args.video_path_prefix, # could be '' I think
                     decode_audio=False
@@ -46,7 +46,7 @@ class FlyDataModule(pl.LightningDataModule):
             self.val_dataset = LimitDataset(
                 pytorchvideo.data.labeled_video_dataset(
                     data_path=self.args.val_data_path,
-                    clip_sampler=pytorchvideo.data.make_clip_sampler('uniform', self.args.clip_duration), # Experiment olarak random da denenebilir
+                    clip_sampler=pytorchvideo.data.make_clip_sampler('uniform', self.args.clip_duration),
                     transform=val_transform,
                     video_path_prefix=self.args.video_path_prefix, # could be '' I think
                     decode_audio=False
