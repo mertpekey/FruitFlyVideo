@@ -29,7 +29,7 @@ To run inference using the provided `inference.py` file, follow these steps:
     git clone https://github.com/mertpekey/FruitFlyVideo.git
     ```
 
-2. Create a directory named `Prediction_Data`, and inside that directory, create a `Test` folder. Place the videos you want to make inferences on inside the `Test` folder. You can modify the folder structure and image names if needed.
+2. Create a directory named `Prediction_Data`, and inside that directory, create a `Test` folder. Place the videos you want to make inferences on inside the `Test` folder. You can modify the folder structure and video names if needed.
 
 3. Create a directory named `Pretrained_Model`, and download the pretrained model inside that folder. Change the name of the file to `pretrained_model.ckpt`. Or you can define it using `--model_name` argument.
 
@@ -78,20 +78,22 @@ Here's an example of what a `predictions.json` file may look like:
 
 Training Data structure is important to read the classes properly. There should be a folder (default: FlyTrainingData) which consists of two folders, Train and Validation. Both of these files should have folders that represents classes and video files should be in these folders.
 
-    ```bash
-    cd FruitFlyVideo
-    mkdir FlyTrainingData
-    cd FlyTrainingData
-    mkdir Train Validation
-    cd Train
-    mkdir Feeding Grooming Pumping
-    cd ../Validation
-    mkdir Feeding Grooming Pumping
+    ```
+FruitFlyVideo/
+└── FlyTrainingData/
+    ├── Train/
+    │   ├── Feeding/
+    │   ├── Grooming/
+    │   └── Pumping/
+    └── Validation/
+        ├── Feeding/
+        ├── Grooming/
+        └── Pumping/
     ```
 
-To train the model, some arguments should be set properly. All arguments can be found in ```arguments.py```. An example script to finetune a pretrained model head using new data:
+To train the model, some arguments should be set properly. All arguments can be found in ```arguments.py```. An example script to finetune a pretrained model head using new dataset is as follows
 
-    ```bash
+    ```
     python main.py --mode 'train' --finetune_head True --batch_size 16 --max_epochs 1 --lr 0.001 --sample_rate 16
     ```
 
