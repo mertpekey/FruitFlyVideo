@@ -26,7 +26,7 @@ The project uses `bouts_dict.pkl` and `true_annotations.pkl` files to get the ti
 
 ### Predicting Plots
 
-1. In a txt file, you should add fly name and experiment id as the following format:
+1. In a txt file (you can refer to `fly_experiment.txt`), you should add fly name and experiment id as the following format:
 
 ```
 Fly05182022_5d -- 0
@@ -36,7 +36,7 @@ Fly06072022_5d -- 16
 2. Run the following script to generate the plots in folder called `peak_plots_output`. The `fly_experiments_fn` argument is only for plot_peaks.py
 
 ```bash
-    python plot_peaks.py --fly_experiments_fn your_filename.txt
+python plot_peaks.py --fly_experiments_fn your_filename.txt
 ```
 
 ### Evaluating Model Predictions
@@ -44,7 +44,7 @@ Fly06072022_5d -- 16
 1. To evaluate the model predictions on the data in `bouts_dict.pkl` file (Only the ones which has true annotations in `true_annotations.pkl`), run the following script
 
 ```bash
-    python evaluate_predictions.py --features distance.origin-prob distance.head-prob pose.prob_x pose.prob_y --contamination 0.04 --grouped_range 60 --add_golay --add_mv_stats
+python evaluate_predictions.py --features distance.origin-prob distance.head-prob pose.prob_x pose.prob_y --contamination 0.04 --grouped_range 60 --add_golay --add_mv_stats
 ```
 
 ---
