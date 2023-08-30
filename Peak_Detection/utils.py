@@ -23,18 +23,25 @@ def create_input_data(fly, experiment, features, bouts_dict):
     return input_data
 
 
-def create_fly_database(true_peak_annotations_df):
+def create_fly_database(bouts_dict, true_peak_annotations_df=None):
     from FlyInfo import FlyDatabase, FlyInfo
     
     fly_db = FlyDatabase()
-    fly_names = true_peak_annotations_df['name'].unique()
+    all_fly_names = list(bouts_dict.keys())
+    fly_names_annot = true_peak_annotations_df['name'].unique().tolist()
 
-    for name in fly_names:
-        trial_idxs = true_peak_annotations_df[true_peak_annotations_df['name'] == name]['trial_id'].unique().tolist()
-        for idx in trial_idxs:
-            peak_index = true_peak_annotations_df[(true_peak_annotations_df['name'] == name) & (true_peak_annotations_df['trial_id'] == idx)]['peak_index'].values
-            peak_values = true_peak_annotations_df[(true_peak_annotations_df['name'] == name) & (true_peak_annotations_df['trial_id'] == idx)]['value'].values
-            fly_db.add_fly(FlyInfo(name, idx, peak_index, peak_values))
+    for name in all_fly_names:
+        true_idx = []
+        if name in fly_names_annot:
+            true_idx = true_peak_annotations_df[true_peak_annotations_df['name'] == name]['trial_id'].unique().astype(int).tolist()
+
+        for idx in range(len(bouts_dict[name])):
+            if idx in true_idx:
+                peak_index = true_peak_annotations_df[(true_peak_annotations_df['name'] == name) & (true_peak_annotations_df['trial_id'] == str(idx))]['peak_index'].values
+                peak_values = true_peak_annotations_df[(true_peak_annotations_df['name'] == name) & (true_peak_annotations_df['trial_id'] == str(idx))]['value'].values
+                fly_db.add_fly(FlyInfo(name, idx, peak_index, peak_values))
+            else:
+                fly_db.add_fly(FlyInfo(name, idx, None, None))
     return fly_db
 
 
@@ -181,15 +188,16 @@ def evaluate_model(fly_db, config, bouts_dict):
     all_results, all_results_group = [], []
 
     for fly in fly_db.fly_data:
-        info_df = get_model_prediction(fly, config, bouts_dict)
-        
-        anomalies = info_df.loc[info_df['predictions'] == -1, ['distance.origin-prob']]
-        anomalies_idx = list(anomalies.index)
+        if fly.peak_index is not None:
+            info_df = get_model_prediction(fly, config, bouts_dict)
+            
+            anomalies = info_df.loc[info_df['predictions'] == -1, ['distance.origin-prob']]
+            anomalies_idx = list(anomalies.index)
 
-        group_pred_idx, group_pred_val = filter_prediction(anomalies, grouped_range=config['grouped_range'])
-        
-        all_results.append({'true_index': fly.peak_index, 'predicted_index': anomalies_idx})
-        all_results_group.append({'true_index': fly.peak_index, 'predicted_index': group_pred_idx})
+            group_pred_idx, group_pred_val = filter_prediction(anomalies, grouped_range=config['grouped_range'])
+            
+            all_results.append({'true_index': fly.peak_index, 'predicted_index': anomalies_idx})
+            all_results_group.append({'true_index': fly.peak_index, 'predicted_index': group_pred_idx})
 
     results = evaluate_results(all_results)
     results_g = evaluate_results(all_results_group)
@@ -252,7 +260,7 @@ def plot_peak_predictions(fly_db, fly_names, experiments, config, bouts_dict):
 def plot_and_save_data(data_x, data_y, peak_x, peak_y, fly, show_annot, is_filtered):
     plt.plot(data_x, data_y, color='black', label = 'Normal')
     plt.scatter(peak_x, peak_y, color='red', label = 'Anomaly')
-    if show_annot:
+    if show_annot and fly.peak_index is not None:
         for true_peaks in fly.peak_index:
             min_range, max_range = true_peaks - 30, true_peaks + 30
             plt.axvspan(min_range, max_range, color='yellow', alpha=0.3)
