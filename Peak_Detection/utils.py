@@ -9,8 +9,6 @@ from sklearn.ensemble import IsolationForest
 ######## Reading & Creating Data ########
 
 def read_pickle(filename):
-    DATA_PATH = '/Users/mpekey/Desktop/FlyVideo/Peak_Signal_Data'
-    filename = os.path.join(DATA_PATH, filename)
     with open(filename, 'rb') as f: 
         loaded_file = pickle.load(f)
     return loaded_file
