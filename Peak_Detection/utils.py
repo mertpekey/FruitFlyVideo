@@ -242,7 +242,7 @@ def plot_peak_predictions(fly_db, fly_names, experiments, config, bouts_dict):
         os.makedirs('peak_plots_output')
 
     for fly_nm, exp_id in zip(fly_names, experiments):
-        fly = fly_db.get_fly(fly_nm, exp_id)
+        fly = fly_db.get_fly(fly_nm, int(exp_id))
         if fly is None:
             print(f'Fly Name: {fly_nm}, Experiment ID: {exp_id} Not Found!!!')
             continue
@@ -264,7 +264,7 @@ def plot_and_save_data(data_x, data_y, peak_x, peak_y, fly, show_annot, is_filte
         for true_peaks in fly.peak_index:
             min_range, max_range = true_peaks - 30, true_peaks + 30
             plt.axvspan(min_range, max_range, color='yellow', alpha=0.3)
-    plt.title("Method 1 - All Predictions")
+    plt.title("Peak Prediction")
     plt.legend(fontsize='small')
     plot_filename_all = os.path.join('peak_plots_output', f"{fly.name}_{fly.trial_id}_{'filtered' if is_filtered else 'all'}.png")
     plt.savefig(plot_filename_all)

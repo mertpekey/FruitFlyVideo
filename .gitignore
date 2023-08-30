@@ -7,3 +7,5 @@ Prediction_Data
 wandb_checkpoints/
 __pycache__/
 Peak_Detection/all_peak_output
+Peak_Detection/bouts_dict.pkl
+Peak_Detection/true_annotations.pkl

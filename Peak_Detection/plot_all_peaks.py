@@ -8,12 +8,11 @@ def plot_all_peaks(config):
     if not os.path.exists(base_dir):
         os.makedirs(base_dir)
 
-    bouts_dict = utils.read_pickle('/Users/mpekey/Desktop/FlyVideo/Peak_Signal_Data/bouts_dict.pkl')
-    true_peak_annotations_df = utils.read_pickle('/Users/mpekey/Desktop/FlyVideo/Peak_Signal_Data/true_annotations.pkl')
+    bouts_dict = utils.read_pickle('bouts_dict.pkl')
+    true_peak_annotations_df = utils.read_pickle('true_annotations.pkl')
     fly_db = utils.create_fly_database(bouts_dict, true_peak_annotations_df=true_peak_annotations_df)
 
     for fly in fly_db.fly_data:
-        all_results_group = []
         info_df = utils.get_model_prediction(fly, config, bouts_dict)
         
         anomalies = info_df.loc[info_df['predictions'] == -1, ['distance.origin-prob']]

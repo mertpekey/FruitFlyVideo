@@ -5,7 +5,7 @@ def main(args):
     bouts_dict = utils.read_pickle('bouts_dict.pkl')
     true_peak_annotations_df = utils.read_pickle('true_annotations.pkl')
 
-    fly_db = utils.create_fly_database(true_peak_annotations_df)
+    fly_db = utils.create_fly_database(bouts_dict, true_peak_annotations_df)
     config = utils.create_config(features=args.features,
                                  contamination=args.contamination,
                                  grouped_range=args.grouped_range,
