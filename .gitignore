@@ -6,3 +6,4 @@ lightning_logs
 Prediction_Data
 wandb_checkpoints/
 __pycache__/
+Peak_Detection/all_peak_output
