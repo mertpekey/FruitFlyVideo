@@ -14,7 +14,7 @@ pip install pandas numpy matplotlib scikit-learn
 
 The project relies on two essential files, `bouts_dict.pkl` and `true_annotations.pkl`, to extract time series information. If you wish to introduce new data, consider modifying these existing files or creating new data with a similar format.
 
-### Usage
+## Usage
 
 #### Common Arguments
 
