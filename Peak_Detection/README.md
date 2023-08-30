@@ -16,7 +16,7 @@ The project relies on two essential files, `bouts_dict.pkl` and `true_annotation
 
 ## Usage
 
-#### Common Arguments
+### Common Arguments
 
 - `--features`: Specify the features used for peak prediction.
 - `--contamination`: Set the contamination value.
@@ -24,7 +24,7 @@ The project relies on two essential files, `bouts_dict.pkl` and `true_annotation
 - `--add_golay`: Include Golay filters for `pose.thor_post_x` and `pose.thor_post_y` features.
 - `--add_mv_stats`: Add moving averages and standard deviations for the `distance.origin-prob` feature.
 
-#### Predicting Plots
+### Predicting Plots
 
 1. Prepare a text file (you can refer to `fly_experiment.txt`) containing fly names and corresponding experiment IDs in the format:
 
@@ -39,7 +39,7 @@ Fly06072022_5d -- 16
 python plot_peaks.py --fly_experiments_fn your_filename.txt
 ```
 
-#### Evaluating Model Predictions
+### Evaluating Model Predictions
 
 1. Evaluate model predictions on the data in the `bouts_dict.pkl` file, considering only those instances with true annotations in `true_annotations.pkl`. Use the following command:
 
