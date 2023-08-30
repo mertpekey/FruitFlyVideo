@@ -37,6 +37,7 @@ def create_fly_database(true_peak_annotations_df):
             fly_db.add_fly(FlyInfo(name, idx, peak_index, peak_values))
     return fly_db
 
+
 ######## Feature Engineering ########
 
 def add_mv_stats(df):
@@ -96,6 +97,7 @@ def get_model_prediction(fly, config, bouts_dict):
                             bootstrap=False)
     info_df['predictions'] = model.fit_predict(scaled_data)
     return info_df
+
 
 ######## Evaluation ########
 

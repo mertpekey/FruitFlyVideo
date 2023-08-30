@@ -7,7 +7,7 @@ This project focuses on detecting peaks in time series data using the Isolation 
 Install the required libraries using the following pip commands:
 
 ```bash
-pip install pandas numpy matplotlib scikit-learn
+pip install pandas numpy matplotlib scikit-learn scipy
 ```
 
 ## Data
